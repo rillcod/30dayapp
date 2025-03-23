@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30-Day New Testament Reading Plan</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f5ff;
+            color: #001f3f;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 10px;
+        }
+        header {
+            background-color: #001f3f;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            border-bottom: 5px solid #e51c23;
+            margin-bottom: 20px;
+        }
+        h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+        .day-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .day-header {
+            background-color: #001f3f;
+            color: white;
+            padding: 10px 15px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .day-header::after {
+            content: "▼";
+            font-size: 14px;
+        }
+        .day-header.collapsed::after {
+            content: "▲";
+        }
+        .day-content {
+            padding: 15px;
+            display: none; /* Collapsed by default */
+        }
+        .day-content.expanded {
+            display: block;
+        }
+        .reading-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .chapter-btn {
+            background-color: #001f3f;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .chapter-btn:hover {
+            background-color: #e51c23;
+        }
+        .book-title {
+            color: #e51c23;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .progress-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 4px;
+            margin: 10px 0;
+        }
+        .progress-bar {
+            height: 8px;
+            background-color: #e51c23;
+            border-radius: 4px;
+            width: 0%;
+        }
+        .completion-text {
+            text-align: right;
+            font-size: 12px;
+            color: #555;
+        }
+        .bible-screen {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .bible-text {
+            font-size: 16px;
+            line-height: 1.8;
+            white-space: pre-wrap;
+        }
+        .back-btn {
+            display: block;
+            margin: 10px 0;
+            padding: 10px 15px;
+            background-color: #e51c23;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-align: center;
+        }
+        .back-btn:hover {
+            background-color: #c4141a;
+        }
+        .slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 10px;
+            padding-bottom: 20px;
+            margin-top: 20px;
+        }
+        .slider-card {
+            flex: 0 0 auto;
+            width: 90%;
+            scroll-snap-align: start;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            padding: 15px;
+        }
+        .reset-btn {
+            display: block;
+            margin: 10px 0;
+            padding: 8px 12px;
+            background-color: #e51c23;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            text-align: center;
+        }
+        .reset-btn:hover {
+            background-color: #c4141a;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>30-Day New Testament Reading Plan</h1>
+        </div>
+    </header>
+    
+    <div class="container">
+        <div class="progress-container">
+            <div class="progress-bar" id="overall-progress"></div>
+        </div>
+        <div class="completion-text">
+            <span id="completion-percentage">0%</span> Complete
+        </div>
+        
+        <!-- Reading Plan -->
+        <div id="reading-plan">
+            <!-- Day 1 -->
+            <div class="day-card">
+                <div class="day-header" onclick="toggleDay(this)">Day 1 - Matthew 1-9</div>
+                <div class="day-content">
+                    <div class="book-title">Matthew</div>
+                    <div class="reading-buttons">
+                        <button class="chapter-btn" onclick="loadChapter('Matthew+1', 'KJV')">Matthew 1</button>
+                        <button class="chapter-btn" onclick="loadChapter('Matthew+2', 'KJV')">Matthew 2</button>
+                        <button class="chapter-btn" onclick="loadChapter('Matthew+3', 'KJV')">Matthew 3</button>
+                        <button class="chapter-btn" onclick="loadChapter('Matthew+4', 'KJV')">Matthew 4</button>
+                        <button class="chapter-btn" onclick="loadChapter('Matthew+5', 'KJV')">Matthew 5</button>
+                        <button class="chapter-btn" onclick="loadChapter('Matthew+6', 'KJV')">Matthew 6</button>
+                        <button class="chapter-btn" onclick="loadChapter('Matthew+7', 'KJV')">Matthew 7</button>
+                        <button class="chapter-btn" onclick="loadChapter('Matthew+8', 'KJV')">Matthew 8</button>
+                        <button class="chapter-btn" onclick="loadChapter('Matthew+9', 'KJV')">Matthew 9</button>
+                    </div>
+                    <button class="reset-btn" onclick="resetDay('Matthew+1', 'Matthew+2', 'Matthew+3', 'Matthew+4', 'Matthew+5', 'Matthew+6', 'Matthew+7', 'Matthew+8', 'Matthew+9')">Reset Day 1</button>
+                </div>
+            </div>
+
+            <!-- Day 2 -->
+            <div class="day-card">
+                <div class="day-header" onclick="toggleDay(this)">Day 2 - Matthew 10-18</div>
+                <div class="day-content">
+                    <div class="book-title">Matthew</div>
+                    <div class="reading-buttons">
+                        <button class="chapter-btn" onclick="loadChapter('Matthew+10', 'KJV')">Matthew 10</button>
+                        <button class="chapter-btn" onclick="loadChapter('Matthew+11', 'KJV')">Matthew 11</button>
+                        <button class="chapter-btn" onclick="loadChapter('Matthew+12', 'KJV')">Matthew 12</button>
+                        <button class="chapter-btn" onclick="loadChapter('Matthew+13', 'KJV')">Matthew 13</button>
+                        <button class="chapter-btn" onclick="loadChapter('Matthew+14', 'KJV')">Matthew 14</button>
+                        <button class="chapter-btn" onclick="loadChapter('Matthew+15', 'KJV')">Matthew 15</button>
+                        <button class="chapter-btn" onclick="loadChapter('Matthew+16', 'KJV')">Matthew 16</button>
+                        <button class="chapter-btn" onclick="loadChapter('Matthew+17', 'KJV')">Matthew 17</button>
+                        <button class="chapter-btn" onclick="loadChapter('Matthew+18', 'KJV')">Matthew 18</button>
+                    </div>
+                    <button class="reset-btn" onclick="resetDay('Matthew+10', 'Matthew+11', 'Matthew+12', 'Matthew+13', 'Matthew+14', 'Matthew+15', 'Matthew+16', 'Matthew+17', 'Matthew+18')">Reset Day 2</button>
+                </div>
+            </div>
+            <!-- Day 3 -->
+            <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">Day 3</div>
+            <div class="day-content">
+                <div class="book-title">Matthew</div>
+                <div class="reading-buttons">
+                    <button class="chapter-btn" onclick="loadChapter('Matthew+19', 'KJV')">Matthew 19</button>
+                    <button class="chapter-btn" onclick="loadChapter('Matthew+20', 'KJV')">Matthew 20</button>
+                    <button class="chapter-btn" onclick="loadChapter('Matthew+21', 'KJV')">Matthew 21</button>
+                    <button class="chapter-btn" onclick="loadChapter('Matthew+22', 'KJV')">Matthew 22</button>
+                    <button class="chapter-btn" onclick="loadChapter('Matthew+23', 'KJV')">Matthew 23</button>
+                    <button class="chapter-btn" onclick="loadChapter('Matthew+24', 'KJV')">Matthew 24</button>
+                    <button class="chapter-btn" onclick="loadChapter('Matthew+25', 'KJV')">Matthew 25</button>
+                    <button class="chapter-btn" onclick="loadChapter('Matthew+26', 'KJV')">Matthew 26</button>
+                    <button class="chapter-btn" onclick="loadChapter('Matthew+27', 'KJV')">Matthew 27</button>
+                </div>
+            </div>
+            </div>
+
+            <!-- Day 4 -->
+            <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">Day 4</div>
+            <div class="day-content">
+                <div class="book-title">Matthew - Mark</div>
+                <div class="reading-buttons">
+                    <button class="chapter-btn" onclick="loadChapter('Matthew+28', 'KJV')">Matthew 28</button>
+                    <button class="chapter-btn" onclick="loadChapter('Mark+1', 'KJV')">Mark 1</button>
+                    <button class="chapter-btn" onclick="loadChapter('Mark+2', 'KJV')">Mark 2</button>
+                    <button class="chapter-btn" onclick="loadChapter('Mark+3', 'KJV')">Mark 3</button>
+                    <button class="chapter-btn" onclick="loadChapter('Mark+4', 'KJV')">Mark 4</button>
+                    <button class="chapter-btn" onclick="loadChapter('Mark+5', 'KJV')">Mark 5</button>
+                    <button class="chapter-btn" onclick="loadChapter('Mark+6', 'KJV')">Mark 6</button>
+                    <button class="chapter-btn" onclick="loadChapter('Mark+7', 'KJV')">Mark 7</button>
+                    <button class="chapter-btn" onclick="loadChapter('Mark+8', 'KJV')">Mark 8</button>
+                </div>
+            </div>
+            </div>
+
+            <!-- Day 5 -->
+            <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">Day 5</div>
+            <div class="day-content">
+                <div class="book-title">Mark</div>
+                <div class="reading-buttons">
+                    <button class="chapter-btn" onclick="loadChapter('Mark+9', 'KJV')">Mark 9</button>
+                    <button class="chapter-btn" onclick="loadChapter('Mark+10', 'KJV')">Mark 10</button>
+                    <button class="chapter-btn" onclick="loadChapter('Mark+11', 'KJV')">Mark 11</button>
+                    <button class="chapter-btn" onclick="loadChapter('Mark+12', 'KJV')">Mark 12</button>
+                    <button class="chapter-btn" onclick="loadChapter('Mark+13', 'KJV')">Mark 13</button>
+                    <button class="chapter-btn" onclick="loadChapter('Mark+14', 'KJV')">Mark 14</button>
+                    <button class="chapter-btn" onclick="loadChapter('Mark+15', 'KJV')">Mark 15</button>
+                    <button class="chapter-btn" onclick="loadChapter('Mark+16', 'KJV')">Mark 16</button>
+                    <button class="chapter-btn" onclick="loadChapter('Luke+1', 'KJV')">Luke 1</button>
+                </div>
+            </div>
+            </div>
+
+            <!-- Day 6 -->
+            <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">Day 6</div>
+            <div class="day-content">
+                <div class="book-title">Luke</div>
+                <div class="reading-buttons">
+                    <button class="chapter-btn" onclick="loadChapter('Luke+2', 'KJV')">Luke 2</button>
+                    <button class="chapter-btn" onclick="loadChapter('Luke+3', 'KJV')">Luke 3</button>
+                    <button class="chapter-btn" onclick="loadChapter('Luke+4', 'KJV')">Luke 4</button>
+                    <button class="chapter-btn" onclick="loadChapter('Luke+5', 'KJV')">Luke 5</button>
+                    <button class="chapter-btn" onclick="loadChapter('Luke+6', 'KJV')">Luke 6</button>
+                    <button class="chapter-btn" onclick="loadChapter('Luke+7', 'KJV')">Luke 7</button>
+                    <button class="chapter-btn" onclick="loadChapter('Luke+8', 'KJV')">Luke 8</button>
+                    <button class="chapter-btn" onclick="loadChapter('Luke+9', 'KJV')">Luke 9</button>
+                    <button class="chapter-btn" onclick="loadChapter('Luke+10', 'KJV')">Luke 10</button>
+                </div>
+            </div>
+            </div>
+
+            <!-- Day 7 -->
+            <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">Day 7</div>
+            <div class="day-content">
+                <div class="book-title">Luke</div>
+                <div class="reading-buttons">
+                    <button class="chapter-btn" onclick="loadChapter('Luke+11', 'KJV')">Luke 11</button>
+                    <button class="chapter-btn" onclick="loadChapter('Luke+12', 'KJV')">Luke 12</button>
+                    <button class="chapter-btn" onclick="loadChapter('Luke+13', 'KJV')">Luke 13</button>
+                    <button class="chapter-btn" onclick="loadChapter('Luke+14', 'KJV')">Luke 14</button>
+                    <button class="chapter-btn" onclick="loadChapter('Luke+15', 'KJV')">Luke 15</button>
+                    <button class="chapter-btn" onclick="loadChapter('Luke+16', 'KJV')">Luke 16</button>
+                    <button class="chapter-btn" onclick="loadChapter('Luke+17', 'KJV')">Luke 17</button>
+                    <button class="chapter-btn" onclick="loadChapter('Luke+18', 'KJV')">Luke 18</button>
+                    <button class="chapter-btn" onclick="loadChapter('Luke+19', 'KJV')">Luke 19</button>
+                </div>
+            </div>
+            </div>
+
+            <!-- Day 8 -->
+            <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">Day 8</div>
+            <div class="day-content">
+                <div class="book-title">Luke</div>
+                <div class="reading-buttons">
+                    <button class="chapter-btn" onclick="loadChapter('Luke+20', 'KJV')">Luke 20</button>
+                    <button class="chapter-btn" onclick="loadChapter('Luke+21', 'KJV')">Luke 21</button>
+                    <button class="chapter-btn" onclick="loadChapter('Luke+22', 'KJV')">Luke 22</button>
+                    <button class="chapter-btn" onclick="loadChapter('Luke+23', 'KJV')">Luke 23</button>
+                    <button class="chapter-btn" onclick="loadChapter('Luke+24', 'KJV')">Luke 24</button>
+                    <button class="chapter-btn" onclick="loadChapter('John+1', 'KJV')">John 1</button>
+                    <button class="chapter-btn" onclick="loadChapter('John+2', 'KJV')">John 2</button>
+                    <button class="chapter-btn" onclick="loadChapter('John+3', 'KJV')">John 3</button>
+                    <button class="chapter-btn" onclick="loadChapter('John+4', 'KJV')">John 4</button>
+                </div>
+            </div>
+            </div>
+
+            <!-- Day 9 -->
+            <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">Day 9</div>
+            <div class="day-content">
+                <div class="book-title">John</div>
+                <div class="reading-buttons">
+                    <button class="chapter-btn" onclick="loadChapter('John+5', 'KJV')">John 5</button>
+                    <button class="chapter-btn" onclick="loadChapter('John+6', 'KJV')">John 6</button>
+                    <button class="chapter-btn" onclick="loadChapter('John+7', 'KJV')">John 7</button>
+                    <button class="chapter-btn" onclick="loadChapter('John+8', 'KJV')">John 8</button>
+                    <button class="chapter-btn" onclick="loadChapter('John+9', 'KJV')">John 9</button>
+                    <button class="chapter-btn" onclick="loadChapter('John+10', 'KJV')">John 10</button>
+                    <button class="chapter-btn" onclick="loadChapter('John+11', 'KJV')">John 11</button>
+                    <button class="chapter-btn" onclick="loadChapter('John+12', 'KJV')">John 12</button>
+                    <button class="chapter-btn" onclick="loadChapter('John+13', 'KJV')">John 13</button>
+                </div>
+            </div>
+            </div>
+
+            <!-- Day 10 -->
+            <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">Day 10</div>
+            <div class="day-content">
+                <div class="book-title">John - Acts</div>
+                <div class="reading-buttons">
+                    <button class="chapter-btn" onclick="loadChapter('John+14', 'KJV')">John 14</button>
+                    <button class="chapter-btn" onclick="loadChapter('John+15', 'KJV')">John 15</button>
+                    <button class="chapter-btn" onclick="loadChapter('John+16', 'KJV')">John 16</button>
+                    <button class="chapter-btn" onclick="loadChapter('John+17', 'KJV')">John 17</button>
+                    <button class="chapter-btn" onclick="loadChapter('John+18', 'KJV')">John 18</button>
+                    <button class="chapter-btn" onclick="loadChapter('John+19', 'KJV')">John 19</button>
+                    <button class="chapter-btn" onclick="loadChapter('John+20', 'KJV')">John 20</button>
+                    <button class="chapter-btn" onclick="loadChapter('John+21', 'KJV')">John 21</button>
+                    <button class="chapter-btn" onclick="loadChapter('Acts+1', 'KJV')">Acts 1</button>
+                </div>
+            </div>
+            </div>
+
+            <!-- Day 11 -->
+            <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">Day 11</div>
+            <div class="day-content">
+                <div class="book-title">Acts</div>
+                <div class="reading-buttons">
+                    <button class="chapter-btn" onclick="loadChapter('Acts+2', 'KJV')">Acts 2</button>
+                    <button class="chapter-btn" onclick="loadChapter('Acts+3', 'KJV')">Acts 3</button>
+                    <button class="chapter-btn" onclick="loadChapter('Acts+4', 'KJV')">Acts 4</button>
+                    <button class="chapter-btn" onclick="loadChapter('Acts+5', 'KJV')">Acts 5</button>
+                    <button class="chapter-btn" onclick="loadChapter('Acts+6', 'KJV')">Acts 6</button>
+                    <button class="chapter-btn" onclick="loadChapter('Acts+7', 'KJV')">Acts 7</button>
+                    <button class="chapter-btn" onclick="loadChapter('Acts+8', 'KJV')">Acts 8</button>
+                    <button class="chapter-btn" onclick="loadChapter('Acts+9', 'KJV')">Acts 9</button>
+                    <button class="chapter-btn" onclick="loadChapter('Acts+10', 'KJV')">Acts 10</button>
+                </div>
+            </div>
+            </div>
+
+            <!-- Day 12 -->
+            <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">Day 12</div>
+            <div class="day-content">
+                <div class="book-title">Acts</div>
+                <div class="reading-buttons">
+                    <button class="chapter-btn" onclick="loadChapter('Acts+11', 'KJV')">Acts 11</button>
+                    <button class="chapter-btn" onclick="loadChapter('Acts+12', 'KJV')">Acts 12</button>
+                    <button class="chapter-btn" onclick="loadChapter('Acts+13', 'KJV')">Acts 13</button>
+                    <button class="chapter-btn" onclick="loadChapter('Acts+14', 'KJV')">Acts 14</button>
+                    <button class="chapter-btn" onclick="loadChapter('Acts+15', 'KJV')">Acts 15</button>
+                    <button class="chapter-btn" onclick="loadChapter('Acts+16', 'KJV')">Acts 16</button>
+                    <button class="chapter-btn" onclick="loadChapter('Acts+17', 'KJV')">Acts 17</button>
+                    <button class="chapter-btn" onclick="loadChapter('Acts+18', 'KJV')">Acts 18</button>
+                    <button class="chapter-btn" onclick="loadChapter('Acts+19', 'KJV')">Acts 19</button>
+                </div>
+            </div>
+            </div>
+
+            <!-- Day 13 -->
+            <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">Day 13</div>
+            <div class="day-content">
+                <div class="book-title">Acts - Romans</div>
+                <div class="reading-buttons">
+                    <button class="chapter-btn" onclick="loadChapter('Acts+20', 'KJV')">Acts 20</button>
+                    <button class="chapter-btn" onclick="loadChapter('Acts+21', 'KJV')">Acts 21</button>
+                    <button class="chapter-btn" onclick="loadChapter('Acts+22', 'KJV')">Acts 22</button>
+                    <button class="chapter-btn" onclick="loadChapter('Acts+23', 'KJV')">Acts 23</button>
+                    <button class="chapter-btn" onclick="loadChapter('Acts+24', 'KJV')">Acts 24</button>
+                    <button class="chapter-btn" onclick="loadChapter('Acts+25', 'KJV')">Acts 25</button>
+                    <button class="chapter-btn" onclick="loadChapter('Acts+26', 'KJV')">Acts 26</button>
+                    <button class="chapter-btn" onclick="loadChapter('Acts+27', 'KJV')">Acts 27</button>
+                    <button class="chapter-btn" onclick="loadChapter('Acts+28', 'KJV')">Acts 28</button>
+                </div>
+            </div>
+            </div>
+
+            <!-- Day 14 -->
+            <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">Day 14</div>
+            <div class="day-content">
+                <div class="book-title">Romans</div>
+                <div class="reading-buttons">
+                    <button class="chapter-btn" onclick="loadChapter('Romans+1', 'KJV')">Romans 1</button>
+                    <button class="chapter-btn" onclick="loadChapter('Romans+2', 'KJV')">Romans 2</button>
+                    <button class="chapter-btn" onclick="loadChapter('Romans+3', 'KJV')">Romans 3</button>
+                    <button class="chapter-btn" onclick="loadChapter('Romans+4', 'KJV')">Romans 4</button>
+                    <button class="chapter-btn" onclick="loadChapter('Romans+5', 'KJV')">Romans 5</button>
+                    <button class="chapter-btn" onclick="loadChapter('Romans+6', 'KJV')">Romans 6</button>
+                    <button class="chapter-btn" onclick="loadChapter('Romans+7', 'KJV')">Romans 7</button>
+                    <button class="chapter-btn" onclick="loadChapter('Romans+8', 'KJV')">Romans 8</button>
+                    <button class="chapter-btn" onclick="loadChapter('Romans+9', 'KJV')">Romans 9</button>
+                </div>
+            </div>
+            </div>
+
+            <!-- Day 15 -->
+            <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">Day 15</div>
+            <div class="day-content">
+                <div class="book-title">Romans - 1 Corinthians</div>
+                <div class="reading-buttons">
+                    <button class="chapter-btn" onclick="loadChapter('Romans+10', 'KJV')">Romans 10</button>
+                    <button class="chapter-btn" onclick="loadChapter('Romans+11', 'KJV')">Romans 11</button>
+                    <button class="chapter-btn" onclick="loadChapter('Romans+12', 'KJV')">Romans 12</button>
+                    <button class="chapter-btn" onclick="loadChapter('Romans+13', 'KJV')">Romans 13</button>
+                    <button class="chapter-btn" onclick="loadChapter('Romans+14', 'KJV')">Romans 14</button>
+                    <button class="chapter-btn" onclick="loadChapter('Romans+15', 'KJV')">Romans 15</button>
+                    <button class="chapter-btn" onclick="loadChapter('Romans+16', 'KJV')">Romans 16</button>
+                    <button class="chapter-btn" onclick="loadChapter('1+Corinthians+1', 'KJV')">1 Corinthians 1</button>
+                    <button class="chapter-btn" onclick="loadChapter('1+Corinthians+2', 'KJV')">1 Corinthians 2</button>
+                </div>
+            </div>
+            </div>
+
+            <!-- Day 16 -->
+            <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">Day 16</div>
+            <div class="day-content">
+                <div class="book-title">1 Corinthians</div>
+                <div class="reading-buttons">
+                    <button class="chapter-btn" onclick="loadChapter('1+Corinthians+3', 'KJV')">1 Corinthians 3</button>
+                    <button class="chapter-btn" onclick="loadChapter('1+Corinthians+4', 'KJV')">1 Corinthians 4</button>
+                    <button class="chapter-btn" onclick="loadChapter('1+Corinthians+5', 'KJV')">1 Corinthians 5</button>
+                    <button class="chapter-btn" onclick="loadChapter('1+Corinthians+6', 'KJV')">1 Corinthians 6</button>
+                    <button class="chapter-btn" onclick="loadChapter('1+Corinthians+7', 'KJV')">1 Corinthians 7</button>
+                    <button class="chapter-btn" onclick="loadChapter('1+Corinthians+8', 'KJV')">1 Corinthians 8</button>
+                    <button class="chapter-btn" onclick="loadChapter('1+Corinthians+9', 'KJV')">1 Corinthians 9</button>
+                    <button class="chapter-btn" onclick="loadChapter('1+Corinthians+10', 'KJV')">1 Corinthians 10</button>
+                    <button class="chapter-btn" onclick="loadChapter('1+Corinthians+11', 'KJV')">1 Corinthians 11</button>
+                </div>
+            </div>
+            </div>
+
+            <!-- Day 17 -->
+            <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">Day 17</div>
+            <div class="day-content">
+                <div class="book-title">1 Corinthians - 2 Corinthians</div>
+                <div class="reading-buttons">
+                    <button class="chapter-btn" onclick="loadChapter('1+Corinthians+12', 'KJV')">1 Corinthians 12</button>
+                    <button class="chapter-btn" onclick="loadChapter('1+Corinthians+13', 'KJV')">1 Corinthians 13</button>
+                    <button class="chapter-btn" onclick="loadChapter('1+Corinthians+14', 'KJV')">1 Corinthians 14</button>
+                    <button class="chapter-btn" onclick="loadChapter('1+Corinthians+15', 'KJV')">1 Corinthians 15</button>
+                    <button class="chapter-btn" onclick="loadChapter('1+Corinthians+16', 'KJV')">1 Corinthians 16</button>
+                    <button class="chapter-btn" onclick="loadChapter('2+Corinthians+1', 'KJV')">2 Corinthians 1</button>
+                    <button class="chapter-btn" onclick="loadChapter('2+Corinthians+2', 'KJV')">2 Corinthians 2</button>
+                    <button class="chapter-btn" onclick="loadChapter('2+Corinthians+3', 'KJV')">2 Corinthians 3</button>
+                    <button class="chapter-btn" onclick="loadChapter('2+Corinthians+4', 'KJV')">2 Corinthians 4</button>
+                </div>
+            </div>
+            </div>
+
+            <!-- Day 18 -->
+            <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">Day 18</div>
+            <div class="day-content">
+                <div class="book-title">2 Corinthians - Galatians</div>
+                <div class="reading-buttons">
+                    <button class="chapter-btn" onclick="loadChapter('2+Corinthians+5', 'KJV')">2 Corinthians 5</button>
+                    <button class="chapter-btn" onclick="loadChapter('2+Corinthians+6', 'KJV')">2 Corinthians 6</button>
+                    <button class="chapter-btn" onclick="loadChapter('2+Corinthians+7', 'KJV')">2 Corinthians 7</button>
+                    <button class="chapter-btn" onclick="loadChapter('2+Corinthians+8', 'KJV')">2 Corinthians 8</button>
+                    <button class="chapter-btn" onclick="loadChapter('2+Corinthians+9', 'KJV')">2 Corinthians 9</button>
+                    <button class="chapter-btn" onclick="loadChapter('2+Corinthians+10', 'KJV')">2 Corinthians 10</button>
+                    <button class="chapter-btn" onclick="loadChapter('2+Corinthians+11', 'KJV')">2 Corinthians 11</button>
+                    <button class="chapter-btn" onclick="loadChapter('2+Corinthians+12', 'KJV')">2 Corinthians 12</button>
+                    <button class="chapter-btn" onclick="loadChapter('2+Corinthians+13', 'KJV')">2 Corinthians 13</button>
+                </div>
+            </div>
+            </div>
+
+            <!-- Day 19 -->
+            <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">Day 19</div>
+            <div class="day-content">
+                <div class="book-title">Galatians - Ephesians - Philippians</div>
+                <div class="reading-buttons">
+                    <button class="chapter-btn" onclick="loadChapter('Galatians+1', 'KJV')">Galatians 1</button>
+                    <button class="chapter-btn" onclick="loadChapter('Galatians+2', 'KJV')">Galatians 2</button>
+                    <button class="chapter-btn" onclick="loadChapter('Galatians+3', 'KJV')">Galatians 3</button>
+                    <button class="chapter-btn" onclick="loadChapter('Galatians+4', 'KJV')">Galatians 4</button>
+                    <button class="chapter-btn" onclick="loadChapter('Galatians+5', 'KJV')">Galatians 5</button>
+                    <button class="chapter-btn" onclick="loadChapter('Galatians+6', 'KJV')">Galatians 6</button>
+                    <button class="chapter-btn" onclick="loadChapter('Ephesians+1', 'KJV')">Ephesians 1</button>
+                    <button class="chapter-btn" onclick="loadChapter('Ephesians+2', 'KJV')">Ephesians 2</button>
+                    <button class="chapter-btn" onclick="loadChapter('Ephesians+3', 'KJV')">Ephesians 3</button>
+                </div>
+            </div>
+            </div>
+
+            <!-- Day 20 -->
+            <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">Day 20</div>
+            <div class="day-content">
+                <div class="book-title">Ephesians - Philippians - Colossians</div>
+                <div class="reading-buttons">
+                    <button class="chapter-btn" onclick="loadChapter('Ephesians+4', 'KJV')">Ephesians 4</button>
+                    <button class="chapter-btn" onclick="loadChapter('Ephesians+5', 'KJV')">Ephesians 5</button>
+                    <button class="chapter-btn" onclick="loadChapter('Ephesians+6', 'KJV')">Ephesians 6</button>
+                    <button class="chapter-btn" onclick="loadChapter('Philippians+1', 'KJV')">Philippians 1</button>
+                    <button class="chapter-btn" onclick="loadChapter('Philippians+2', 'KJV')">Philippians 2</button>
+                    <button class="chapter-btn" onclick="loadChapter('Philippians+3', 'KJV')">Philippians 3</button>
+                    <button class="chapter-btn" onclick="loadChapter('Philippians+4', 'KJV')">Philippians 4</button>
+                    <button class="chapter-btn" onclick="loadChapter('Colossians+1', 'KJV')">Colossians 1</button>
+                    <button class="chapter-btn" onclick="loadChapter('Colossians+2', 'KJV')">Colossians 2</button>
+                </div>
+            </div>
+            </div>
+
+            <!-- Day 21 -->
+            <div class="day-card">
+            <div class="day-header" onclick="toggleDay(this)">Day 21</div>
+            <div class="day-content">
+                <div class="book-title">Colossians - 1 & 2 Thessalonians - 1 Timothy</div>
+                <div class="reading-buttons">
+                    <button class="chapter-btn" onclick="loadChapter('Colossians+3', 'KJV')">Colossians 3</button>
+                    <button class="chapter-btn" onclick="loadChapter('Colossians+4', 'KJV')">Colossians 4</button>
+                    <button class="chapter-btn" onclick="loadChapter('1+Thessalonians+1', 'KJV')">1 Thessalonians 1</button>
+                    <button class="chapter-btn" onclick="loadChapter('1+Thessalonians+2', 'KJV')">1 Thessalonians 2</button>
+                    <button class="chapter-btn" onclick="loadChapter('1+Thessalonians+3', 'KJV')">1 Thessalonians 3</button>
+                    <button class="chapter-btn" onclick="loadChapter('1+Thessalonians+4', 'KJV')">1 Thessalonians 4</button>
+                    <button class="chapter-btn" onclick="loadChapter('1+Thessalonians+5', 'KJV')">1 Thessalonians 5</button>
+                    <button class="chapter-btn" onclick="loadChapter('2+Thessalonians+1', 'KJV')">2 Thessalonians 1</button>
+                    <button class="chapter-btn" onclick="loadChapter('2+Thessalonians+2', 'KJV')">2 Thessalonians 2</button>
+                </div>
+            </div>
+            </div>
+            <!-- Day 22 -->
+            <div class="day-card">
+                <div class="day-header" onclick="toggleDay(this)">Day 22</div>
+                <div class="day-content">
+                    <div class="book-title">2 Thessalonians - 1 Timothy</div>
+                    <div class="reading-buttons">
+                        <button class="chapter-btn" onclick="loadChapter('2+Thessalonians+3', 'KJV')">2 Thessalonians 3</button>
+                        <button class="chapter-btn" onclick="loadChapter('1+Timothy+1', 'KJV')">1 Timothy 1</button>
+                        <button class="chapter-btn" onclick="loadChapter('1+Timothy+2', 'KJV')">1 Timothy 2</button>
+                        <button class="chapter-btn" onclick="loadChapter('1+Timothy+3', 'KJV')">1 Timothy 3</button>
+                        <button class="chapter-btn" onclick="loadChapter('1+Timothy+4', 'KJV')">1 Timothy 4</button>
+                        <button class="chapter-btn" onclick="loadChapter('1+Timothy+5', 'KJV')">1 Timothy 5</button>
+                        <button class="chapter-btn" onclick="loadChapter('1+Timothy+6', 'KJV')">1 Timothy 6</button>
+                        <button class="chapter-btn" onclick="loadChapter('2+Timothy+1', 'KJV')">2 Timothy 1</button>
+                        <button class="chapter-btn" onclick="loadChapter('2+Timothy+2', 'KJV')">2 Timothy 2</button>
+                    </div>
+                    <button class="reset-btn" onclick="resetDay('2+Thessalonians+3', '1+Timothy+1', '1+Timothy+2', '1+Timothy+3', '1+Timothy+4', '1+Timothy+5', '1+Timothy+6', '2+Timothy+1', '2+Timothy+2')">Reset Day 22</button>
+                </div>
+                </div>
+                
+                <!-- Day 23 -->
+                <div class="day-card">
+                <div class="day-header" onclick="toggleDay(this)">Day 23</div>
+                <div class="day-content">
+                    <div class="book-title">2 Timothy - Titus - Philemon - Hebrews</div>
+                    <div class="reading-buttons">
+                        <button class="chapter-btn" onclick="loadChapter('2+Timothy+3', 'KJV')">2 Timothy 3</button>
+                        <button class="chapter-btn" onclick="loadChapter('2+Timothy+4', 'KJV')">2 Timothy 4</button>
+                        <button class="chapter-btn" onclick="loadChapter('Titus+1', 'KJV')">Titus 1</button>
+                        <button class="chapter-btn" onclick="loadChapter('Titus+2', 'KJV')">Titus 2</button>
+                        <button class="chapter-btn" onclick="loadChapter('Titus+3', 'KJV')">Titus 3</button>
+                        <button class="chapter-btn" onclick="loadChapter('Philemon+1', 'KJV')">Philemon 1</button>
+                        <button class="chapter-btn" onclick="loadChapter('Hebrews+1', 'KJV')">Hebrews 1</button>
+                        <button class="chapter-btn" onclick="loadChapter('Hebrews+2', 'KJV')">Hebrews 2</button>
+                        <button class="chapter-btn" onclick="loadChapter('Hebrews+3', 'KJV')">Hebrews 3</button>
+                    </div>
+                    <button class="reset-btn" onclick="resetDay('2+Timothy+3', '2+Timothy+4', 'Titus+1', 'Titus+2', 'Titus+3', 'Philemon+1', 'Hebrews+1', 'Hebrews+2', 'Hebrews+3')">Reset Day 23</button>
+                </div>
+                </div>
+                
+                <!-- Day 24 -->
+                <div class="day-card">
+                <div class="day-header" onclick="toggleDay(this)">Day 24</div>
+                <div class="day-content">
+                    <div class="book-title">Hebrews</div>
+                    <div class="reading-buttons">
+                        <button class="chapter-btn" onclick="loadChapter('Hebrews+4', 'KJV')">Hebrews 4</button>
+                        <button class="chapter-btn" onclick="loadChapter('Hebrews+5', 'KJV')">Hebrews 5</button>
+                        <button class="chapter-btn" onclick="loadChapter('Hebrews+6', 'KJV')">Hebrews 6</button>
+                        <button class="chapter-btn" onclick="loadChapter('Hebrews+7', 'KJV')">Hebrews 7</button>
+                        <button class="chapter-btn" onclick="loadChapter('Hebrews+8', 'KJV')">Hebrews 8</button>
+                        <button class="chapter-btn" onclick="loadChapter('Hebrews+9', 'KJV')">Hebrews 9</button>
+                        <button class="chapter-btn" onclick="loadChapter('Hebrews+10', 'KJV')">Hebrews 10</button>
+                        <button class="chapter-btn" onclick="loadChapter('Hebrews+11', 'KJV')">Hebrews 11</button>
+                        <button class="chapter-btn" onclick="loadChapter('Hebrews+12', 'KJV')">Hebrews 12</button>
+                    </div>
+                    <button class="reset-btn" onclick="resetDay('Hebrews+4', 'Hebrews+5', 'Hebrews+6', 'Hebrews+7', 'Hebrews+8', 'Hebrews+9', 'Hebrews+10', 'Hebrews+11', 'Hebrews+12')">Reset Day 24</button>
+                </div>
+                </div>
+                
+                <!-- Day 25 -->
+                <div class="day-card">
+                <div class="day-header" onclick="toggleDay(this)">Day 25</div>
+                <div class="day-content">
+                    <div class="book-title">Hebrews - James - 1 Peter</div>
+                    <div class="reading-buttons">
+                        <button class="chapter-btn" onclick="loadChapter('Hebrews+13', 'KJV')">Hebrews 13</button>
+                        <button class="chapter-btn" onclick="loadChapter('James+1', 'KJV')">James 1</button>
+                        <button class="chapter-btn" onclick="loadChapter('James+2', 'KJV')">James 2</button>
+                        <button class="chapter-btn" onclick="loadChapter('James+3', 'KJV')">James 3</button>
+                        <button class="chapter-btn" onclick="loadChapter('James+4', 'KJV')">James 4</button>
+                        <button class="chapter-btn" onclick="loadChapter('James+5', 'KJV')">James 5</button>
+                        <button class="chapter-btn" onclick="loadChapter('1+Peter+1', 'KJV')">1 Peter 1</button>
+                        <button class="chapter-btn" onclick="loadChapter('1+Peter+2', 'KJV')">1 Peter 2</button>
+                        <button class="chapter-btn" onclick="loadChapter('1+Peter+3', 'KJV')">1 Peter 3</button>
+                    </div>
+                    <button class="reset-btn" onclick="resetDay('Hebrews+13', 'James+1', 'James+2', 'James+3', 'James+4', 'James+5', '1+Peter+1', '1+Peter+2', '1+Peter+3')">Reset Day 25</button>
+                </div>
+                </div>
+                
+                <!-- Day 26 -->
+                <div class="day-card">
+                <div class="day-header" onclick="toggleDay(this)">Day 26</div>
+                <div class="day-content">
+                    <div class="book-title">1 Peter - 2 Peter - 1 John</div>
+                    <div class="reading-buttons">
+                        <button class="chapter-btn" onclick="loadChapter('1+Peter+4', 'KJV')">1 Peter 4</button>
+                        <button class="chapter-btn" onclick="loadChapter('1+Peter+5', 'KJV')">1 Peter 5</button>
+                        <button class="chapter-btn" onclick="loadChapter('2+Peter+1', 'KJV')">2 Peter 1</button>
+                        <button class="chapter-btn" onclick="loadChapter('2+Peter+2', 'KJV')">2 Peter 2</button>
+                        <button class="chapter-btn" onclick="loadChapter('2+Peter+3', 'KJV')">2 Peter 3</button>
+                        <button class="chapter-btn" onclick="loadChapter('1+John+1', 'KJV')">1 John 1</button>
+                        <button class="chapter-btn" onclick="loadChapter('1+John+2', 'KJV')">1 John 2</button>
+                        <button class="chapter-btn" onclick="loadChapter('1+John+3', 'KJV')">1 John 3</button>
+                        <button class="chapter-btn" onclick="loadChapter('1+John+4', 'KJV')">1 John 4</button>
+                    </div>
+                    <button class="reset-btn" onclick="resetDay('1+Peter+4', '1+Peter+5', '2+Peter+1', '2+Peter+2', '2+Peter+3', '1+John+1', '1+John+2', '1+John+3', '1+John+4')">Reset Day 26</button>
+                </div>
+                </div>
+                
+                <!-- Day 27 -->
+                <div class="day-card">
+                <div class="day-header" onclick="toggleDay(this)">Day 27</div>
+                <div class="day-content">
+                    <div class="book-title">1 John - 2 John - 3 John - Jude - Revelation</div>
+                    <div class="reading-buttons">
+                        <button class="chapter-btn" onclick="loadChapter('1+John+5', 'KJV')">1 John 5</button>
+                        <button class="chapter-btn" onclick="loadChapter('2+John+1', 'KJV')">2 John 1</button>
+                        <button class="chapter-btn" onclick="loadChapter('3+John+1', 'KJV')">3 John 1</button>
+                        <button class="chapter-btn" onclick="loadChapter('Jude+1', 'KJV')">Jude 1</button>
+                        <button class="chapter-btn" onclick="loadChapter('Revelation+1', 'KJV')">Revelation 1</button>
+                        <button class="chapter-btn" onclick="loadChapter('Revelation+2', 'KJV')">Revelation 2</button>
+                        <button class="chapter-btn" onclick="loadChapter('Revelation+3', 'KJV')">Revelation 3</button>
+                        <button class="chapter-btn" onclick="loadChapter('Revelation+4', 'KJV')">Revelation 4</button>
+                        <button class="chapter-btn" onclick="loadChapter('Revelation+5', 'KJV')">Revelation 5</button>
+                    </div>
+                    <button class="reset-btn" onclick="resetDay('1+John+5', '2+John+1', '3+John+1', 'Jude+1', 'Revelation+1', 'Revelation+2', 'Revelation+3', 'Revelation+4', 'Revelation+5')">Reset Day 27</button>
+                </div>
+                </div>
+                
+                <!-- Day 28 -->
+                <div class="day-card">
+                <div class="day-header" onclick="toggleDay(this)">Day 28</div>
+                <div class="day-content">
+                    <div class="book-title">Revelation</div>
+                    <div class="reading-buttons">
+                        <button class="chapter-btn" onclick="loadChapter('Revelation+6', 'KJV')">Revelation 6</button>
+                        <button class="chapter-btn" onclick="loadChapter('Revelation+7', 'KJV')">Revelation 7</button>
+                        <button class="chapter-btn" onclick="loadChapter('Revelation+8', 'KJV')">Revelation 8</button>
+                        <button class="chapter-btn" onclick="loadChapter('Revelation+9', 'KJV')">Revelation 9</button>
+                        <button class="chapter-btn" onclick="loadChapter('Revelation+10', 'KJV')">Revelation 10</button>
+                        <button class="chapter-btn" onclick="loadChapter('Revelation+11', 'KJV')">Revelation 11</button>
+                        <button class="chapter-btn" onclick="loadChapter('Revelation+12', 'KJV')">Revelation 12</button>
+                        <button class="chapter-btn" onclick="loadChapter('Revelation+13', 'KJV')">Revelation 13</button>
+                        <button class="chapter-btn" onclick="loadChapter('Revelation+14', 'KJV')">Revelation 14</button>
+                    </div>
+                    <button class="reset-btn" onclick="resetDay('Revelation+6', 'Revelation+7', 'Revelation+8', 'Revelation+9', 'Revelation+10', 'Revelation+11', 'Revelation+12', 'Revelation+13', 'Revelation+14')">Reset Day 28</button>
+                </div>
+                </div>
+                
+                <!-- Day 29 -->
+                <div class="day-card">
+                <div class="day-header" onclick="toggleDay(this)">Day 29</div>
+                <div class="day-content">
+                    <div class="book-title">Revelation</div>
+                    <div class="reading-buttons">
+                        <button class="chapter-btn" onclick="loadChapter('Revelation+15', 'KJV')">Revelation 15</button>
+                        <button class="chapter-btn" onclick="loadChapter('Revelation+16', 'KJV')">Revelation 16</button>
+                        <button class="chapter-btn" onclick="loadChapter('Revelation+17', 'KJV')">Revelation 17</button>
+                        <button class="chapter-btn" onclick="loadChapter('Revelation+18', 'KJV')">Revelation 18</button>
+                        <button class="chapter-btn" onclick="loadChapter('Revelation+19', 'KJV')">Revelation 19</button>
+                        <button class="chapter-btn" onclick="loadChapter('Revelation+20', 'KJV')">Revelation 20</button>
+                        <button class="chapter-btn" onclick="loadChapter('Revelation+21', 'KJV')">Revelation 21</button>
+                        <button class="chapter-btn" onclick="loadChapter('Revelation+22', 'KJV')">Revelation 22</button>
+                    </div>
+                    <button class="reset-btn" onclick="resetDay('Revelation+15', 'Revelation+16', 'Revelation+17', 'Revelation+18', 'Revelation+19', 'Revelation+20', 'Revelation+21', 'Revelation+22')">Reset Day 29</button>
+                </div>
+                </div>
+                
+                <!-- Day 30 -->
+                <div class="day-card">
+                <div class="day-header" onclick="toggleDay(this)">Day 30 - Review Day</div>
+                <div class="day-content">
+                    <div class="book-title">Review & Reflection</div>
+                    <p>Congratulations on completing your 30-day New Testament reading journey! Today is a day for reflection on what you've read.</p>
+                    <p>Consider reviewing key passages or chapters that stood out to you during this month. You might also want to spend time in prayer and meditation on the Word.</p>
+                    
+                    <div class="book-title" style="margin-top: 20px;">Reading Summary</div>
+                    <ul style="list-style-type: disc; margin-left: 20px;">
+                        <li>Days 1-3: Matthew</li>
+                        <li>Days 4-5: Mark</li>
+                        <li>Days 6-8: Luke</li>
+                        <li>Days 9-10: John</li>
+                        <li>Days 11-13: Acts</li>
+                        <li>Days 14-15: Romans</li>
+                        <li>Days 16-17: 1 Corinthians</li>
+                        <li>Days 18-20: 2 Corinthians to Philippians</li>
+                        <li>Days 21-23: Colossians to Philemon</li>
+                        <li>Days 24-25: Hebrews to James</li>
+                        <li>Days 26-27: 1 Peter to Jude</li>
+                        <li>Days 28-29: Revelation</li>
+                    </ul>
+                </div>
+                </div>
+                    <!-- Add more days here (up to Day 30) -->
+        </div>
+
+        <!-- Bible Screen -->
+        <div class="bible-screen" id="bible-screen">
+            <button class="back-btn" onclick="goBack()">Back to Plan</button>
+            <div class="slider" id="slider">
+                <!-- Slider cards will be dynamically added here -->
+            </div>
+            <div class="bible-text" id="bible-text">Select a chapter to begin reading.</div>
+        </div>
+    </div>
+
+    <script>
+        // Function to toggle day collapse/expand
+        function toggleDay(header) {
+            const content = header.nextElementSibling;
+            content.classList.toggle('expanded');
+            header.classList.toggle('collapsed');
+        }
+
+        // Function to load chapter from Bible API
+        async function loadChapter(passage, version) {
+            const apiUrl = `https://bible-api.com/${passage}?translation=${version}`;
+            try {
+                const response = await fetch(apiUrl);
+                const data = await response.json();
+                const formattedText = data.text.replace(/\n/g, '<br>'); // Preserve line breaks
+                document.getElementById('bible-text').innerHTML = `<strong>${data.reference}</strong><br><br>${formattedText}`;
+                showBibleScreen();
+                markRead(passage); // Mark as read
+            } catch (error) {
+                document.getElementById('bible-text').innerHTML = "Error loading passage. Please try again.";
+            }
+        }
+
+        // Function to show the Bible screen
+        function showBibleScreen() {
+            document.getElementById('reading-plan').style.display = 'none';
+            document.getElementById('bible-screen').style.display = 'block';
+        }
+
+        // Function to go back to the reading plan
+        function goBack() {
+            document.getElementById('reading-plan').style.display = 'block';
+            document.getElementById('bible-screen').style.display = 'none';
+        }
+
+        // Function to reset progress for a specific day
+        function resetDay(...chapters) {
+            chapters.forEach(chapter => {
+                if (localStorage.getItem(chapter)) {
+                    localStorage.removeItem(chapter);
+                    readChapters--;
+                }
+            });
+            updateProgress();
+            alert("Day reset successfully!");
+        }
+
+        // Function to track progress
+        let totalChapters = 260; // Total chapters in the New Testament
+        let readChapters = 0;
+
+        function markRead(passage) {
+            if (!localStorage.getItem(passage)) {
+                localStorage.setItem(passage, 'read');
+                readChapters++;
+                updateProgress();
+            }
+        }
+
+        function updateProgress() {
+            const progressPercentage = (readChapters / totalChapters) * 100;
+            document.getElementById('overall-progress').style.width = progressPercentage + '%';
+            document.getElementById('completion-percentage').textContent = Math.round(progressPercentage) + '%';
+        }
+
+        // Initialize progress on page load
+        function initializeProgress() {
+            readChapters = Object.keys(localStorage).length;
+            updateProgress();
+        }
+
+        window.onload = initializeProgress;
+    </script>
+</body>
+</html>
